@@ -1,0 +1,22 @@
+#! /bin/bash
+
+LOG_PATH="tf-logs"
+TIMESTAMP=$(date +'%m-%d-%Y-%T')
+
+# if execution of a help command, no need to log.
+if [[ "$*" == *help* ]]; then
+    terraform "$@"
+    exit
+fi
+
+# check for log path. if does not exist, create
+[ -d $LOG_PATH ] || mkdir -p $LOG_PATH/states
+
+# backup current state in HCL format
+if [[ "$*" == *apply* ]] || [[ "$*" == *-out* ]]; then
+    terraform show > $LOG_PATH/states/$TIMESTAMP-terraform-state.hcl
+    grep -l "No state." $LOG_PATH/states/$TIMESTAMP-terraform-state.hcl | xargs rm
+fi
+
+# run intended Terraform command outputting to both terminal and logfile
+terraform "$@" 2>&1 | tee $LOG_PATH/$TIMESTAMP-terraform-$1.log
