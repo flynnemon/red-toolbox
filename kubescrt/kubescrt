@@ -1,3 +1,17 @@
 #! /bin/bash
 
-kubectl get secret $1 -o json | jq '.data | map_values(@base64d)'
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -s|--secrets)
+    kubectl get secret $2 -o json | jq '.data | map_values(@base64d)'
+    exit
+    ;;
+    *)
+    kubectl get secret $1 -o json | jq '.data | map_values(@base64d)' | jq '.| to_entries[] | "\(.key)"'
+    exit
+    ;;
+esac
+done

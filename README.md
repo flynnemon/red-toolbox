@@ -4,7 +4,7 @@ The `Red Toolbox` is a collection of scripts and tools that make life a tiny bit
 
 ### Install
 
-run the install script from your local `Red Toolbox` folder.
+Run the install script from your local `Red Toolbox` folder.
 ```bash
 ./install.sh
 ```
