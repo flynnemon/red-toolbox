@@ -1,17 +1,69 @@
-# kubescrt
-### While getting sensative data from Kubernetes is simple, it could be simpler!
+# Manage Kubernetes secrets
 
-`kubescrt` is a simple tool to quickly read secrets in Kubernetes.
+## Installation
 
-#### Get Secret keys
-```bash
-kubescrt [SECRET NAME]
+```
+$ pip install -r requirements.txt
+
+$ pip install setup.py
 ```
 
-#### Get Secret keys and values
-```bash
-kubescrt -s [SECRET NAME]
+## Development
+
+This project includes a number of helpers in the `Makefile` to streamline common development tasks.
+
+### Environment Setup
+
+The following demonstrates setting up and working with a development environment:
+
+```
+### create a virtualenv for development
+
+$ make virtualenv
+
+$ source env/bin/activate
+
+
+### run kubesecret cli application
+
+$ kubesecret --help
+
+
+### run pytest / coverage
+
+$ make test
 ```
 
-#### Dependencies
-- JQ
+
+### Releasing to PyPi
+
+Before releasing to PyPi, you must configure your login credentials:
+
+**~/.pypirc**:
+
+```
+[pypi]
+username = YOUR_USERNAME
+password = YOUR_PASSWORD
+```
+
+Then use the included helper function via the `Makefile`:
+
+```
+$ make dist
+
+$ make dist-upload
+```
+
+## Deployments
+
+### Docker
+
+Included is a basic `Dockerfile` for building and distributing `KubeSecret`,
+and can be built with the included `make` helper:
+
+```
+$ make docker
+
+$ docker run -it kubesecret --help
+```
